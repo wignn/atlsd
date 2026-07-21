@@ -4,6 +4,7 @@ mod batcher;
 mod calendar;
 mod clickhouse;
 mod config;
+mod cot;
 mod data_quality;
 mod economic;
 mod history;
@@ -130,6 +131,13 @@ async fn main() {
         });
         info!("economic data sync (FRED) enabled");
     }
+
+    let cot_cfg = cfg.clone();
+    let cot_pool = state.db.clone();
+    tokio::spawn(async move {
+        cot::run_cot_sync(cot_cfg, cot_pool).await;
+    });
+    info!("CFTC COT positioning data sync enabled");
 
     let listener = match TcpListener::bind(&cfg.bind_addr).await {
         Ok(listener) => listener,

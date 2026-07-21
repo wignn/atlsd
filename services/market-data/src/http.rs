@@ -51,6 +51,15 @@ pub fn build_router(state: AppState) -> Router {
             "/api/v1/market/economic/categories",
             get(crate::economic::list_categories),
         )
+        .route("/api/v1/cot/markets", get(crate::cot::list_cot_markets))
+        .route(
+            "/api/v1/cot/symbol/{symbol}",
+            get(crate::cot::get_cot_by_symbol),
+        )
+        .route(
+            "/api/v1/cot/{market_code}",
+            get(crate::cot::get_cot_by_market),
+        )
         .layer(cors)
         .with_state(state)
 }

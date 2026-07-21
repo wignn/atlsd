@@ -19,6 +19,8 @@ pub struct Config {
     pub alert_cooldown_sec: u64,
     pub fred_api_key: String,
     pub economic_refresh_sec: u64,
+    pub cot_sync_sec: u64,
+    pub cot_data_url: String,
 }
 
 impl Config {
@@ -56,6 +58,11 @@ impl Config {
             alert_cooldown_sec: get_env_u64("ALERT_COOLDOWN_SEC", 900).max(60),
             fred_api_key: get_env("FRED_API_KEY", ""),
             economic_refresh_sec: get_env_u64("ECONOMIC_REFRESH_SEC", 21600).max(600),
+            cot_sync_sec: get_env_u64("COT_SYNC_SEC", 86400).max(600),
+            cot_data_url: get_env(
+                "COT_DATA_URL",
+                "https://www.cftc.gov/dea/newfmt/deacot2026.txt",
+            ),
         }
     }
 
